@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row mt-1">
+        <div class="col-3 mt-3">
+            <a href="{{ url_for('login', id=current_user.id) }}">Back</a>
+            <h1>Register</h1>
+            <form action="" method="post">
+                {{ form.hidden_tag() }}
+                <div>
+                    {{ form.address.label(class="form-label") }}
+                    {{ form.address(class="form-control",size=32) }}
+                    {% for error in form.address.errors %}
+                        <div class="text-danger ">
+                            {{ error }}
+                        </div>
+                    {% endfor %}
+                </div>
+                <div class="my-2">
+                    <button type="submit" class="btn btn-primary my-2">{{ submit }}Submit</button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+    {% for shop in shops %}
+            {% include '_shop_table.html' %}
+        {% endfor %}
+    {% endblock %}
+</div>
+

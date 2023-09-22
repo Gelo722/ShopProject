@@ -1,0 +1,9 @@
+{% if current_user.sell(product.product_id)>0 %}
+<tr>
+    <th>{{ product.information.product_id_warehouse}}</th>
+    <td>{{ product.information.product}}</td>
+    <td>{{ product.information.price}}</td>
+    <td>{{current_user.sell(product.product_id)}}</td>
+</tr>
+{% else %}
+{% endif %}

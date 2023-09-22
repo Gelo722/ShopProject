@@ -1,0 +1,24 @@
+{% extends 'base.html'%}
+
+
+{% block content %}
+<h1 class="mt-2">Hi, {{ user.address }}, user id {{ user.id }}!</h1>
+<h2 class="text-secondary mt-2">Your deliveries:</h2>
+<table class="table text-center table-bordered table-striped" >
+    <thead>
+        <tr>
+            <th scope="col">id</th>
+            <th scope="col">Product</th>
+            <th scope="col">Bag Price</th>
+            <th scope="col">Quantity</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for product in warehouse %}
+            {% include '_table_warehouse.html' %}
+        {% endfor %}
+    </tbody>
+
+</table>
+
+{% endblock %}

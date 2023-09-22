@@ -1,0 +1,70 @@
+{% extends 'base.html'%}
+
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row mt-1">
+        <div class="col-3 mt-3 border rounded-2">
+            <h2>New product</h2>
+
+            <form action="" method="post">
+                <div class="my-2">
+                    {{ form.hidden_tag() }}
+
+                    {{ form.product.label(class="form-label") }}
+                    {{ form.product(class="form-control",size=32) }}
+                    {% for error in form.product.errors %}
+                        <div class="text-danger ">
+                            {{ error }}
+                        </div>
+                    {% endfor %}
+                </div>
+                <div class="my-2" >
+                        {{ form.price.label(class="form-label") }}
+                        {{ form.price(class="form-control",size=32) }}
+                        {% for error in form.price.errors %}
+                            <div class="text-danger ">
+                                {{ error }}
+                            </div>
+                        {% endfor %}
+                </div>
+                <div class="my-3">
+                    <button type="submit" class="btn btn-primary">{{ send }}Send</button>
+                </div>
+
+
+            </form>
+        </div>
+        <div class="col-9">
+            <div class="d-flex justify-content-between align-items-center">
+            <h1 class="m-2">All product categories</h1>
+            <div>
+                <a href="{{ url_for('export_csv') }}" class="btn btn-outline-success" >Export CSV</a>
+            </div>
+
+            </div>
+
+            <!-- <div class="table-responsive "> -->
+            <table class="table text-center table-bordered table-striped " >
+                    <thead>
+                        <tr>
+                              <th scope="col">id</th>
+                              <th scope="col">Product</th>
+                              <th scope="col">Price</th>
+                              <th scope="col">Deliveries</th>
+                              <th scope="col">Change</th>
+<!--                              <th scope="col">Total</th>-->
+                              <th scope="col">Total</th>
+                        </tr>
+                    </thead>
+                    <tbody class="select">
+                    {% for product in products %}
+                        {% include '_product_table.html' %}
+                    {% endfor %}
+                    </tbody>
+            </table>
+        </div>    <!-- </div> -->
+    </div>
+</div>
+
+{% endblock %}

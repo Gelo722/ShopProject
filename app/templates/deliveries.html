@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row mt-1">
+        <div class="col-3 mt-3">
+            <h1>New deliveries: </h1>
+            <h2 class="text-secondary">{{ name.product }}</h2>
+            <form action="" method="post">
+                    {{ form.hidden_tag() }}
+                 <div class="my-2">
+                        {{ form.deliveries_price.label(class="form-label") }}
+                        {{ form.deliveries_price(class="form-control",size=32) }}
+                        {% for error in form.deliveries_price.errors %}
+                            <div class="text-danger ">
+                                {{ error }}
+                            </div>
+                        {% endfor %}
+                    </div>
+                    <div class="my-2">
+                        {{ form.quantity.label(class="form-label") }}
+                        {{ form.quantity(class="form-control",size=32) }}
+                        {% for error in form.quantity.errors %}
+                            <div class="text-danger ">
+                                {{ error }}
+                            </div>
+                        {% endfor %}
+                    </div>
+                    <div class="my-3">
+                        <button type="submit" class="btn btn-primary">{{ send }}Send</button>
+                    </div>
+
+            </form>
+        </div>
+    </div>
+
+    <h1 class="mt-4">Old deliveries {{ name.product }}</h1>
+
+    <table class="table text-center table-bordered table-striped ">
+        <thead>
+            <tr>
+                <th scope="col">Id</th>
+                <th scope="col">Deliveries date</th>
+                <th scope="col">Quantity</th>
+                <th scope="col">Deliveries price</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for deliv in deliveries %}
+            <tr>
+                <td>{{ deliv.deliveries_id }}</td>
+                <td>{{ deliv.deliveries_date }}</td>
+                <td>{{ deliv.quantity }}</td>
+                <td>{{ deliv.deliveries_price }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+</div>
+
+{% endblock %}
