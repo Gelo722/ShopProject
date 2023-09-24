@@ -1,14 +1,12 @@
 # -*- coding: utf-8 -*-
 from app import app, db
-from flask import render_template, flash, redirect, url_for, request, send_file, Response
+from flask import render_template, flash, redirect, url_for, request, send_file
 from app.forms import LoginForm, RegistrationForm, NewProduct, EditProduct, ExpensesForm, DeliveriesForm, SellForm
 from flask_login import current_user, login_user, logout_user, login_required
 from app.models import Shop, Product, Expenses, Deliveries, Receipt
 from sqlalchemy import func
 ####################################
-from flask import send_from_directory
 import excel_export
-from tempfile import NamedTemporaryFile
 ####################################
 
 
@@ -93,22 +91,17 @@ def edit_product(id, product, price):
         form.price.data = product.price
     return render_template('edit_product.html', form=form)
 
-###########это должно скачивать таблицу#################
+###########это теперь качает таблицу#################
 @app.route('/product/csv', methods=['GET', 'POST']) #Скачивает таблицу
 @login_required
 def export_csv():
     excel_export.create_csv()
-    if request.method == 'POST':
-        # p = "test-table2.xlsx"
-        p = excel_export.stream
-        return send_file(p, as_attachment=True, mimetype='text/xlsx')
-    return redirect (url_for('product'))
-    # wb = Workbook()
-    # wb.save('test-csv.xlsx')
-    # p = 'C:/Users/HPpc/PycharmProjects/ShopProject/test-csv.xlsx'
-    # return send_file(p, as_attachment=True, mimetype='text/xlsx'), redirect (url_for('product'))
+    p = excel_export.create_csv.csv_path
+    return send_file(p, as_attachment=True, mimetype='text/xlsx', download_name='table.xlsx' )
 
-############################
+#########################################################
+
+
 
 @app.route('/expenses', methods=['GET', 'POST'])
 @login_required
