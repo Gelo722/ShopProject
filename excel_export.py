@@ -3,7 +3,7 @@ import tempfile
 from openpyxl import Workbook
 from flask import render_template, flash, redirect, url_for, request, send_file
 from openpyxl.styles import PatternFill,Font
-
+import os
 from sqlalchemy import create_engine, text
 
 
@@ -75,18 +75,22 @@ def create_csv():
         ws4.append(d)
 
 
-    print('Я работаю')
+    # print('Я работаю')
 
-    # wb.save("C:\\Users\\HPpc\\PycharmProjects\\ShopProject\\app\\test_csv_folder\\test-table3.xlsx") #сохранить файл локально
+    # wb.save("C:\\Users\\HPpc\\PycharmProjects\\ShopProject\\app\\test-table3.xlsx") #сохранить файл локально
 
     ####################Save file as Stream ####################################
     with NamedTemporaryFile(delete=False) as tmp:
         wb.save(tmp.name)
         tmp.seek(0)
-        stream = tmp.read()
+        create_csv.stream = tmp.read()
+        # print(tmp.name)
+        create_csv.csv_path = tmp.name
 
 
 create_csv()
+
+
 
 
 
