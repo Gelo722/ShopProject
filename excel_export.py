@@ -1,9 +1,7 @@
 from tempfile import NamedTemporaryFile
 import tempfile
 from openpyxl import Workbook
-from flask import render_template, flash, redirect, url_for, request, send_file
-from openpyxl.styles import PatternFill,Font
-import os
+from openpyxl.styles import PatternFill,Font, Alignment, Border, Side
 from sqlalchemy import create_engine, text
 
 
@@ -29,8 +27,6 @@ def create_csv():
     ws1.title = "Deliveries"
     l1=[r for r in deliv_result.keys()] # List of column headers
     ws1.append(l1) # adding column headers at first row
-    # делаем единственный лист активным
-    # ws = wb.active
 
     ws2 = wb.create_sheet("Expenses")
     l2 = [r for r in exp_result.keys()] # List of column headers
@@ -44,15 +40,40 @@ def create_csv():
     l4 = [r for r in receipt_result.keys()]  # List of column headers
     ws4.append(l4)  # adding column headers at first row
 
-
+    ws_list = [ws1,ws2,ws3,ws4]
     my_font=Font(size=12,bold=True) # font styles
     # my_fill=PatternFill(fill_type='solid',start_color='FFFF00') #Background color
-    for cell in ws1["1:1"]: # First row
-        cell.font = my_font
-        # cell.fill= my_fill
+    my_border = Border(left=Side(border_style='dotted',color='000000'),
+                       right=Side(border_style='dotted',color='000000'),
+                       top=Side(border_style='dotted', color='000000'),
+                       bottom=Side(border_style='dotted', color='000000'))
+
+
+
+    for i in ws_list:
+        for column in i.columns:
+            max_length = 0
+            column_letter = column[0].column_letter
+            i.border = my_border
+            for cell in column:
+                try:
+                    if len(str(cell.value)) > max_length:
+                        max_length = len(cell.value)
+                except:
+                    pass
+            adjusted_width = (max_length + 2) * 1.2
+            i.column_dimensions[column_letter].width = adjusted_width
+
+
+    for cell in ws_list:
+        for i in cell["1:1"]:
+            i.font = my_font
+            i.alignment = Alignment(horizontal="center")
+            i.border = my_border
 
     r, c = 2, 0  # row=2 and column=0
 
+##############################################################
     for row_data in deliv_result: # Поставки
 
         d = [r for r in row_data]
@@ -73,13 +94,17 @@ def create_csv():
 
         d = [r for r in row_data]
         ws4.append(d)
+###########################################################
+
+
+
 
 
     # print('Я работаю')
 
     # wb.save("C:\\Users\\HPpc\\PycharmProjects\\ShopProject\\app\\test-table3.xlsx") #сохранить файл локально
 
-    ####################Save file as Stream ####################################
+####################Save file as Stream ####################################
     with NamedTemporaryFile(delete=False) as tmp:
         wb.save(tmp.name)
         tmp.seek(0)
@@ -90,16 +115,3 @@ def create_csv():
 
 create_csv()
 
-
-
-
-
-
-    # return
-
-    # with NamedTemporaryFile() as tmp:
-    #     wb.save(tmp.name)
-    #     tmp.seek(0)
-    #     stream = tmp.read()
-
-    # send_file(path, as_attachment=True)
