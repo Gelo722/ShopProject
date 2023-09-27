@@ -6,13 +6,20 @@ from sqlalchemy import create_engine, text
 
 
 def create_csv():
-    engine = create_engine("sqlite:///C:\\Users\\HPpc\\PycharmProjects\\ShopProject\\app.db")
+    engine = create_engine("sqlite:///app.db") # C:\\Users\\HPpc\\PycharmProjects\\ShopProject\\
 
-    deliveries_query="SELECT * FROM Deliveries " #запросы к каждой из таблиц
+
+
+    deliveries_query="SELECT * FROM Deliveries " #запросы к каждой из таблиц (вся информация)
     expenses_query = "SELECT * FROM Expenses"
     product_query = "SELECT * FROM Product"
     receipt_query = "SELECT * FROM Receipt"
 
+    #Отчет
+    report_query = "SELECT " \
+                   "(SELECT SUM(price) FROM Receipt) as Доход," \
+                   "(SELECT SUM(deliveries_price) FROM Deliveries) as Снабжение, " \
+                   "(SELECT SUM(salary + rent + services) FROM Expenses) as Траты" # Запрос для отчета SUM(price) Receipt
 
     with engine.connect() as connection:
         deliv_result = connection.execute(text(deliveries_query))
@@ -20,6 +27,7 @@ def create_csv():
         prod_result = connection.execute(text(product_query))
         receipt_result = connection.execute(text(receipt_query))
 
+        report_result = connection.execute(text(report_query)) #Отчет
 
     wb = Workbook()
 
@@ -40,7 +48,13 @@ def create_csv():
     l4 = [r for r in receipt_result.keys()]  # List of column headers
     ws4.append(l4)  # adding column headers at first row
 
-    ws_list = [ws1,ws2,ws3,ws4]
+    ws5 = wb.create_sheet("Report")
+    l5 = [r for r in report_result.keys()]
+    ws5.append(l5)
+
+    ws_list = [ws1, ws2, ws3, ws4, ws5]
+
+
     my_font=Font(size=12,bold=True) # font styles
     # my_fill=PatternFill(fill_type='solid',start_color='FFFF00') #Background color
     my_border = Border(left=Side(border_style='dotted',color='000000'),
@@ -49,7 +63,7 @@ def create_csv():
                        bottom=Side(border_style='dotted', color='000000'))
 
 
-
+    #styles
     for i in ws_list:
         for column in i.columns:
             max_length = 0
@@ -73,28 +87,15 @@ def create_csv():
 
     r, c = 2, 0  # row=2 and column=0
 
-##############################################################
-    for row_data in deliv_result: # Поставки
+    #info
+    result_list = [deliv_result, exp_result, prod_result, receipt_result, report_result]
+    ws_index = 0
+    for i in result_list:
+        for row_data in i:
+            d = [r for r in row_data]
+            ws_list[ws_index].append(d)
+        ws_index += 1
 
-        d = [r for r in row_data]
-        ws1.append(d)
-
-    for row_data in exp_result: # Траты
-
-        d = [r for r in row_data]
-        ws2.append(d)
-
-
-    for row_data in prod_result: #Product
-
-        d = [r for r in row_data]
-        ws3.append(d)
-
-    for row_data in receipt_result:  # Receipt
-
-        d = [r for r in row_data]
-        ws4.append(d)
-###########################################################
 
 
 
