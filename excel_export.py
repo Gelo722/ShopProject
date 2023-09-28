@@ -5,21 +5,21 @@ from openpyxl.styles import PatternFill,Font, Alignment, Border, Side
 from sqlalchemy import create_engine, text
 
 
-def create_csv():
+def create_csv(id):
     engine = create_engine("sqlite:///app.db") # C:\\Users\\HPpc\\PycharmProjects\\ShopProject\\
 
 
 
-    deliveries_query="SELECT * FROM Deliveries " #запросы к каждой из таблиц (вся информация)
-    expenses_query = "SELECT * FROM Expenses"
+    deliveries_query="SELECT * FROM Deliveries WHERE point_id = '{}'".format(id) #запросы к каждой из таблиц (вся информация)
+    expenses_query = "SELECT * FROM Expenses WHERE point_id = '{}'".format(id)
     product_query = "SELECT * FROM Product"
-    receipt_query = "SELECT * FROM Receipt"
+    receipt_query = "SELECT * FROM Receipt WHERE point_id = '{}'".format(id)
 
     #Отчет
     report_query = "SELECT " \
-                   "(SELECT SUM(price) FROM Receipt) as Доход," \
-                   "(SELECT SUM(deliveries_price) FROM Deliveries) as Снабжение, " \
-                   "(SELECT SUM(salary + rent + services) FROM Expenses) as Траты" # Запрос для отчета SUM(price) Receipt
+                   "(SELECT SUM(price) FROM Receipt WHERE  Receipt.point_id = '{}') as Доход,"\
+                   "(SELECT SUM(deliveries_price) FROM Deliveries WHERE  Deliveries.point_id = '{}') as Снабжение, " \
+                   "(SELECT SUM(salary + rent + services) FROM Expenses WHERE Expenses.point_id = '{}') as Траты".format(id, id, id)  # Запрос для отчета SUM(price) Receipt
 
     with engine.connect() as connection:
         deliv_result = connection.execute(text(deliveries_query))
@@ -114,5 +114,5 @@ def create_csv():
         create_csv.csv_path = tmp.name
 
 
-create_csv()
+create_csv(id)
 
