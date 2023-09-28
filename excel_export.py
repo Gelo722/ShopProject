@@ -10,16 +10,16 @@ def create_csv(id):
 
 
 
-    deliveries_query="SELECT * FROM Deliveries WHERE point_id = '{}'".format(id) #запросы к каждой из таблиц (вся информация)
-    expenses_query = "SELECT * FROM Expenses WHERE point_id = '{}'".format(id)
-    product_query = "SELECT * FROM Product"
-    receipt_query = "SELECT * FROM Receipt WHERE point_id = '{}'".format(id)
+    deliveries_query="SELECT Deliveries.deliveries_id as DeliveriesID, Deliveries.point_id as PointID, Deliveries.deliveries_date as DateDeliver, Deliveries.deliveries_price as Price, Product.product ,Deliveries.quantity as Quаntity FROM Deliveries LEFT JOIN Product ON Deliveries.product_id=Product.product_id_warehouse WHERE point_id = '{}'".format(id) #запросы к каждой из таблиц (вся информация)
+    expenses_query = "SELECT expenses_id as expensesID, rent, services, salary, date as expenseDate FROM Expenses WHERE point_id = '{}'".format(id)
+    product_query = "SELECT product_id_warehouse as ID, product, price  FROM Product"
+    receipt_query = "SELECT receipt_number as number, Product.product, quantity, Receipt.price, date  FROM Receipt LEFT JOIN Product ON Receipt.product_id=Product.product_id_warehouse WHERE point_id = '{}'".format(id)
 
     #Отчет
     report_query = "SELECT " \
-                   "(SELECT SUM(price) FROM Receipt WHERE  Receipt.point_id = '{}') as Доход,"\
-                   "(SELECT SUM(deliveries_price) FROM Deliveries WHERE  Deliveries.point_id = '{}') as Снабжение, " \
-                   "(SELECT SUM(salary + rent + services) FROM Expenses WHERE Expenses.point_id = '{}') as Траты".format(id, id, id)  # Запрос для отчета SUM(price) Receipt
+                   "(SELECT SUM(price) FROM Receipt WHERE  Receipt.point_id = '{}') as Income,"\
+                   "(SELECT SUM(deliveries_price) FROM Deliveries WHERE  Deliveries.point_id = '{}') as Deliveries, " \
+                   "(SELECT SUM(salary + rent + services) FROM Expenses WHERE Expenses.point_id = '{}') as Expenses".format(id, id, id)  # Запрос для отчета SUM(price) Receipt
 
     with engine.connect() as connection:
         deliv_result = connection.execute(text(deliveries_query))
