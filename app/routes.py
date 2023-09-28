@@ -95,7 +95,7 @@ def edit_product(id, product, price):
 @app.route('/product/csv', methods=['GET', 'POST']) #Скачивает таблицу
 @login_required
 def export_csv():
-    excel_export.create_csv()
+    excel_export.create_csv(current_user.id)
     p = excel_export.create_csv.csv_path
     return send_file(p, as_attachment=True, mimetype='text/xlsx', download_name='table.xlsx' )
 
