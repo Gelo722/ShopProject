@@ -1,5 +1,4 @@
 from tempfile import NamedTemporaryFile
-import tempfile
 from openpyxl import Workbook
 from openpyxl.styles import PatternFill,Font, Alignment, Border, Side
 from sqlalchemy import create_engine, text
