@@ -5,7 +5,7 @@ from sqlalchemy import create_engine, text
 
 
 def create_csv(id):
-    engine = create_engine("sqlite:///app.db") # C:\\Users\\HPpc\\PycharmProjects\\ShopProject\\
+    engine = create_engine("sqlite:///app.db") # database connection
 
 
 
@@ -97,12 +97,7 @@ def create_csv(id):
 
 
 
-
-
-
-    # print('Я работаю')
-
-    # wb.save("C:\\Users\\HPpc\\PycharmProjects\\ShopProject\\app\\test-table3.xlsx") #сохранить файл локально
+    # wb.save("file_path") # сохранить файл локально
 
 ####################Save file as Stream ####################################
     with NamedTemporaryFile(delete=False) as tmp:
