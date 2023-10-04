@@ -150,6 +150,11 @@ def total(did):
 @app.route('/sell/<id>/<receipt_number>', methods=['GET', 'POST'])
 @login_required
 def sell(id, receipt_number):
+    q1=db.session.query(Receipt.date).filter(Receipt.receipt_number == receipt_number).first()
+    if q1 is None:
+        time=datetime.utcnow()
+    else:
+        time=q1[0]
     receipt_number=receipt_number
     receipt1 = Receipt.query.filter(Receipt.receipt_number == receipt_number).order_by(Receipt.date.desc()).all()
     form=SellForm()
@@ -173,7 +178,7 @@ def sell(id, receipt_number):
             return redirect(url_for('sell', id=current_user.id, receipt_number=receipt_number ))
 
         pr = db.session.query(Product.price).filter(Product.product_id_warehouse == form.product_id.data)[0]
-        sale=Receipt(receipt_number=receipt_number, point_id=current_user.id, quantity=form.quantity.data, price=pr[0]*int(form.quantity.data),  product_id=form.product_id.data)
+        sale=Receipt(receipt_number=receipt_number, point_id=current_user.id, quantity=form.quantity.data, price=pr[0]*int(form.quantity.data),  product_id=form.product_id.data, date=time)
         db.session.add(sale)
         db.session.commit()
         flash('Your changes have been saved.')
