@@ -6,5 +6,5 @@
                   <td><a href="{{ url_for('deliveries', did=product.product_id_warehouse) }}">Deliveries</a></td>
                   <td><a href="{{ url_for('edit_product', id=product.product_id_warehouse, product= product.product, price=product.price)}}">Change</a></td>
 <!--                  <td><a href="{{ url_for('total', did=product.product_id_warehouse) }}">Total</a></td>-->
-                  <td>@{{current_user.sell(product.product_id_warehouse)}}</td>
+                  <td>{{current_user.sell(product.product_id_warehouse)}}</td>
             </tr>
