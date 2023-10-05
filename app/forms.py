@@ -28,6 +28,11 @@ class NewProduct(FlaskForm):
     price = FloatField('Product price', validators=[DataRequired()])
     send = SubmitField('To Send')
 
+    def validate_product(self, product):
+        product1=Product.query.filter_by(product=product.data).first()
+        if product1 is not None:
+            raise ValidationError('Error.')
+    
     def validate_price(self, price):
         if price.data < 1:
             raise ValidationError('Error.')
@@ -38,6 +43,11 @@ class EditProduct(FlaskForm):
     price = FloatField('Product price', validators=[DataRequired()])
     send = SubmitField('To Send')
 
+    def validate_product(self, product):
+        product1=Product.query.filter_by(product=product.data).first()
+        if product1 is not None:
+            raise ValidationError('Error.')
+    
     def validate_price(self, price):
         if price.data < 1:
             raise ValidationError('Error.')
