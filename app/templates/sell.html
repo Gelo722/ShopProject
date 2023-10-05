@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
-
+<h1>Receipt Number: {{receipt_number}}</h1>
 <div class="container-fluid">
     <div class="row mt-1">
         {% for receipt2 in receipt1 %}   <!-- Это куда ваще все? -->
@@ -9,8 +9,10 @@
                 Product: {{ receipt2.sale.product}} | Quantity: {{ receipt2.quantity}} | Price: {{ receipt2.price}}
             </table>
         {% endfor %}
-
-        <h1>Receipt Number: {{receipt_number}}</h1>
+        <h2 class="text-secondary mt-2">Total price: {{ receipt1 | sum(attribute='price') }}</h2>
+        <div class="my-3">
+        <a class="btn btn-primary " href="{{ url_for('home', id=current_user.id) }}" role="button">To sell</a>
+        </div>
         <div class="col-3">
             <form action="" method="post">
             {{ form.hidden_tag() }}
@@ -34,7 +36,6 @@
             </div>
             <div class="my-3">
                 <button type="submit" class="btn btn-primary">{{ send }}To Send</button>
-                <p class="mt-2"><a href="{{ url_for('home', id=current_user.id) }}">Back to home</a></p>
             </div>
 
         </div>
