@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from app import app, db
 from flask import render_template, flash, redirect, url_for, request, send_file
-from app.forms import LoginForm, RegistrationForm, NewProduct, EditProduct, ExpensesForm, DeliveriesForm, SellForm
+from app.forms import LoginForm, RegistrationForm, NewProduct, EditProduct, ExpensesForm, DeliveriesForm, SellForm, FindProduct
 from flask_login import current_user, login_user, logout_user, login_required
 from app.models import Shop, Product, Expenses, Deliveries, Receipt
 from sqlalchemy import func
