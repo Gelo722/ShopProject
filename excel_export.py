@@ -17,7 +17,7 @@ def create_csv(id):
     #Отчет
     report_query = "SELECT " \
                    "(SELECT SUM(price) FROM Receipt WHERE  Receipt.point_id = '{}') as Income,"\
-                   "(SELECT SUM(deliveries_price) FROM Deliveries WHERE  Deliveries.point_id = '{}') as Deliveries, " \
+                   "(SELECT SUM(deliveries_price * quantity ) FROM Deliveries WHERE  Deliveries.point_id = '{}') as Deliveries, " \
                    "(SELECT SUM(salary + rent + services) FROM Expenses WHERE Expenses.point_id = '{}') as Expenses".format(id, id, id)  # Запрос для отчета SUM(price) Receipt
 
     with engine.connect() as connection:
