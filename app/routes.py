@@ -92,6 +92,10 @@ def edit_product(id, product, price):
     form=EditProduct()
     product = Product.query.get(id)
     if form.validate_on_submit():
+        product2 = Product.query.filter_by(product=form.product.data).first()
+        if product2 is not None and product.product_id_warehouse != product2.product_id_warehouse:
+            flash('A product with this name is already on the list.')
+            return redirect(url_for('product'))
         product.product= form.product.data
         product.price = form.price.data
         db.session.commit()
