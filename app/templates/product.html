@@ -3,8 +3,8 @@
 
 {% block content %}
 <div class="container-fluid">
-    <div class="row mt-1">
-        <div class="col-3 mt-3 border rounded-2">
+    <div class="row my-2">
+        <div class="col-3 my-2 border rounded-2">
             <h2>New product</h2>
 
             <form action="" method="post">
@@ -37,11 +37,23 @@
         </div>
         <div class="col-9">
             <div class="d-flex justify-content-between align-items-center">
-            <h1 class="m-2">All product categories <a class="btn btn-primary " href="{{ url_for('find_product') }}" role="button">Find</a></h1>
-            <div>
-                <a href="{{ url_for('export_csv') }}" class="btn btn-outline-success" >Export CSV</a>
-            </div>
+            <h1 class="h1">
+                All product categories
+            </h1>
 
+            <div class="d-flex">
+                <div class="mx-2">
+                    <a class="btn btn-outline-primary " href="{{ url_for('find_product') }}" role="button">
+                        <i class="bi bi-search"></i>
+                        Find
+                    </a>
+                </div>
+
+
+                <div>
+                    <a href="{{ url_for('export_csv') }}" class="btn btn-outline-success" >Export CSV</a>
+                </div>
+            </div>
             </div>
 
             <!-- <div class="table-responsive "> -->
