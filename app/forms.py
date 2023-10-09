@@ -38,6 +38,16 @@ class NewProduct(FlaskForm):
             raise ValidationError('Error.')
 
 
+class FindProduct(FlaskForm):
+    product = StringField('Product name', validators=[DataRequired()])
+    find = SubmitField('Find')
+
+    def validate_product(self, product):
+        product1=Product.query.filter(Product.product.contains(product.data)).first()
+        if product1 is None:
+            raise ValidationError('Not found.')
+
+
 class EditProduct(FlaskForm):
     product = StringField('Product name', validators=[DataRequired()])
     price = FloatField('Product price', validators=[DataRequired()])
