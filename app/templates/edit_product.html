@@ -3,8 +3,15 @@
 {% block content %}
 
 <div class="container-fluid">
-    <div class="row mt-1">
+    <div class="row">
+        <div class="pt-3">
+                <a class="btn btn-outline-primary btn-sm" href="{{ url_for('product', id=current_user.id) }}" role="button">
+                    <i class="bi bi-arrow-left"></i>
+                    Back
+                </a>
+        </div>
         <div class="col-3 mt-3">
+
             <h1>Edit product</h1>
     <form action="" method="post">
         {{ form.hidden_tag() }}
@@ -28,7 +35,6 @@
         </div>
         <div class="my-3">
             <button type="submit" class="btn btn-primary">{{ send }}Send</button>
-            <p class="mt-2"><a href="{{ url_for('product') }}">Back</a></p>
         </div>
 
     </form>
