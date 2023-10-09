@@ -1,18 +1,30 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1>Receipt Number: {{receipt_number}}</h1>
+
 <div class="container-fluid">
-    <div class="row mt-1">
-        {% for receipt2 in receipt1 %}   <!-- Это куда ваще все? -->
-            <table>
-                Product: {{ receipt2.sale.product}} | Quantity: {{ receipt2.quantity}} | Price: {{ receipt2.price}}
-            </table>
-        {% endfor %}
-        <h2 class="text-secondary mt-2">Total price: {{ receipt1 | sum(attribute='price') }}</h2>
-        <div class="my-3">
-        <a class="btn btn-primary " href="{{ url_for('home', id=current_user.id) }}" role="button">To sell</a>
-        </div>
+    <div class="py-3">
+        <a class="btn btn-outline-primary btn-sm" href="{{ url_for('home', id=current_user.id) }}" role="button">
+            <i class="bi bi-arrow-left"></i>
+            To sell
+        </a>
+    </div>
+    <h1>Receipt Number: {{receipt_number}}</h1>
+    <div class="row">
+        <table class="table-borderless mx-3">
+            <tbody>
+                {% for receipt2 in receipt1 %}
+
+                    <tr>
+                        <td class="text-secondary">
+                        Product: {{ receipt2.sale.product}} | Quantity: {{ receipt2.quantity}} | Price: {{ receipt2.price}}
+                        </td>
+                    </tr>
+
+                {% endfor %}
+            </tbody>
+        </table>
+        <h2 class="text-secondary ">Total price: {{ receipt1 | sum(attribute='price') }}</h2>
         <div class="col-3">
             <form action="" method="post">
             {{ form.hidden_tag() }}
@@ -65,14 +77,5 @@
     </table>
 
 </div>
-
-
-
-
-
-
-
-
-
 
 {% endblock %}
