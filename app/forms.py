@@ -52,11 +52,6 @@ class EditProduct(FlaskForm):
     product = StringField('Product name', validators=[DataRequired()])
     price = FloatField('Product price', validators=[DataRequired()])
     send = SubmitField('To Send')
-
-    def validate_product(self, product):
-        product1=Product.query.filter_by(product=product.data).first()
-        if product1 is not None:
-            raise ValidationError('Error.')
     
     def validate_price(self, price):
         if price.data < 1:
