@@ -76,6 +76,16 @@ def product():
     return render_template('product.html', active='product', products=products, form=form)
 
 
+@app.route('/find_product', methods=['GET', 'POST'])
+@login_required
+def find_product():
+    form=FindProduct()
+    products=''
+    if form.validate_on_submit():
+        products=Product.query.filter(Product.product.contains(form.product.data)).all()
+    return render_template('find_product.html', form=form, products=products)
+
+
 @app.route('/user/<id>/<product>/<price>', methods=['GET', 'POST'])
 @login_required
 def edit_product(id, product, price):
